@@ -21,7 +21,7 @@ interface FormErrors {
   email?: string;
 }
 
-const N8N_WEBHOOK_URL = 'https://sofisou.app.n8n.cloud/webhook-test/al-pazzo-cotizacion';
+const N8N_WEBHOOK_URL = 'https://josefinanieto1.app.n8n.cloud/webhook-test/Al-pazzo-inscripcion';
 
 const PIZZAS = [
   {
