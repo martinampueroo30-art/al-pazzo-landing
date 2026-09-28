@@ -1293,8 +1293,12 @@
         });
       });
 
+      // Webhook URL de n8n
+      const N8N_WEBHOOK_URL = 'https://sofisou.app.n8n.cloud/webhook-test/al-pazzo-cotizacion';
+      const submitBtn = document.getElementById('submitBtn');
+
       // Manejo de Submit
-      form.addEventListener('submit', (e) => {
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         let isFormValid = true;
@@ -1318,12 +1322,49 @@
           return;
         }
 
-        // Si el formulario es totalmente válido
-        statusAlertText.innerHTML = '<strong>¡Validación exitosa!</strong> Todos los campos cumplen los requisitos obligatorios. La interfaz está lista para ser conectada al servicio de datos definitivo (sin almacenar ni enviar datos por ahora).';
-        statusAlert.classList.add('visible');
+        // Bloquear botón durante el envío
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Enviando...';
+        statusAlert.classList.remove('visible');
 
-        // Scroll hacia la alerta si es necesario
-        statusAlert.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        const payload = {
+          nombre: fields.firstName.input.value.trim(),
+          apellido: fields.lastName.input.value.trim(),
+          direccion: fields.address.input.value.trim(),
+          comuna: fields.commune.input.value.trim(),
+          telefono: fields.phone.input.value.trim(),
+          email: fields.email.input.value.trim(),
+          fechaInscripcion: new Date().toISOString()
+        };
+
+        try {
+          const response = await fetch(N8N_WEBHOOK_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+          });
+
+          if (!response.ok) {
+            throw new Error('Servidor retornó error HTTP ' + response.status);
+          }
+
+          statusAlert.className = 'status-alert status-alert-info visible';
+          statusAlertText.innerHTML = '<strong>¡Inscripción enviada con éxito!</strong> Muchas gracias por registrarte. Te contactaremos a la brevedad para coordinar todos los detalles de tu evento.';
+          form.reset();
+        } catch (err) {
+          console.error('Error al conectar con el webhook de n8n:', err);
+          statusAlert.className = 'status-alert visible';
+          statusAlert.style.backgroundColor = 'var(--primary-light)';
+          statusAlert.style.border = '1px solid var(--primary)';
+          statusAlert.style.color = 'var(--primary)';
+          statusAlertText.innerHTML = 'Ocurrió un inconveniente al enviar tu inscripción. Por favor intenta nuevamente.';
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Inscribirme';
+          statusAlert.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
       });
     });
   </script>

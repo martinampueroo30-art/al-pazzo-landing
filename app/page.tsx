@@ -21,6 +21,8 @@ interface FormErrors {
   email?: string;
 }
 
+const N8N_WEBHOOK_URL = 'https://sofisou.app.n8n.cloud/webhook-test/al-pazzo-cotizacion';
+
 const PIZZAS = [
   {
     name: 'Pomodoro',
@@ -85,7 +87,9 @@ export default function Home() {
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const validateField = (name: keyof FormState, value: string): string | undefined => {
     const trimmed = value.trim();
@@ -135,7 +139,7 @@ export default function Home() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const newErrors: FormErrors = {};
@@ -152,11 +156,53 @@ export default function Home() {
     setErrors(newErrors);
 
     if (hasError) {
-      setIsSuccess(false);
+      setSubmitSuccess(false);
+      setSubmitError(null);
       return;
     }
 
-    setIsSuccess(true);
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const payload = {
+        nombre: formData.firstName.trim(),
+        apellido: formData.lastName.trim(),
+        direccion: formData.address.trim(),
+        comuna: formData.commune.trim(),
+        telefono: formData.phone.trim(),
+        email: formData.email.trim(),
+        fechaInscripcion: new Date().toISOString(),
+      };
+
+      const response = await fetch(N8N_WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Respuesta del servidor no válida (${response.status})`);
+      }
+
+      setSubmitSuccess(true);
+      setFormData({
+        firstName: '',
+        lastName: '',
+        address: '',
+        commune: '',
+        phone: '',
+        email: '',
+      });
+    } catch (err) {
+      console.error('Error al enviar webhook a n8n:', err);
+      setSubmitError('Ocurrió un inconveniente al procesar tu solicitud. Por favor intenta nuevamente.');
+      setSubmitSuccess(false);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -360,16 +406,25 @@ export default function Home() {
               <p>Déjanos tus datos obligatorios y te contactaremos para coordinar tu celebración.</p>
             </div>
 
-            {isSuccess && (
+            {submitSuccess && (
               <div className="status-alert status-alert-info visible" role="alert">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ flexShrink: 0, marginTop: '2px' }}>
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="12" y1="16" x2="12" y2="12"></line>
-                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
                 <div>
-                  <strong>¡Validación exitosa!</strong> Todos los campos cumplen los requisitos obligatorios. La interfaz está lista para ser conectada al servicio de datos definitivo en Vercel.
+                  <strong>¡Inscripción recibida con éxito!</strong> Muchas gracias por registrarte. Te contactaremos a la brevedad para coordinar todos los detalles de tu evento.
                 </div>
+              </div>
+            )}
+
+            {submitError && (
+              <div className="status-alert visible" style={{ backgroundColor: 'var(--primary-light)', border: '1px solid var(--primary)', color: 'var(--primary)' }} role="alert">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ flexShrink: 0, marginTop: '2px' }}>
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <div>{submitError}</div>
               </div>
             )}
 
@@ -390,6 +445,7 @@ export default function Home() {
                       value={formData.firstName}
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      disabled={isSubmitting}
                       required
                     />
                     {errors.firstName && <span className="form-error-msg visible">{errors.firstName}</span>}
@@ -409,6 +465,7 @@ export default function Home() {
                       value={formData.lastName}
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      disabled={isSubmitting}
                       required
                     />
                     {errors.lastName && <span className="form-error-msg visible">{errors.lastName}</span>}
@@ -429,6 +486,7 @@ export default function Home() {
                     value={formData.address}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    disabled={isSubmitting}
                     required
                   />
                   {errors.address && <span className="form-error-msg visible">{errors.address}</span>}
@@ -449,6 +507,7 @@ export default function Home() {
                       value={formData.commune}
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      disabled={isSubmitting}
                       required
                     />
                     {errors.commune && <span className="form-error-msg visible">{errors.commune}</span>}
@@ -468,6 +527,7 @@ export default function Home() {
                       value={formData.phone}
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      disabled={isSubmitting}
                       required
                     />
                     {errors.phone && <span className="form-error-msg visible">{errors.phone}</span>}
@@ -488,14 +548,20 @@ export default function Home() {
                     value={formData.email}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    disabled={isSubmitting}
                     required
                   />
                   {errors.email && <span className="form-error-msg visible">{errors.email}</span>}
                 </div>
 
                 <div style={{ marginTop: '10px' }}>
-                  <button type="submit" className="btn btn-primary btn-block" id="submitBtn">
-                    Inscribirme
+                  <button
+                    type="submit"
+                    className="btn btn-primary btn-block"
+                    id="submitBtn"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? 'Enviando...' : 'Inscribirme'}
                   </button>
                 </div>
               </div>
