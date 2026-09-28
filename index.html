@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Al Pazzo | Banquetería Boutique de Pizzas Artesanales</title>
+  <meta name="description" content="Banquetería boutique de pizzas artesanales para celebraciones y eventos privados en Santiago. Una experiencia cálida, sabrosa e inolvidable.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================
+       DESIGN TOKENS & SYSTEM
+       ========================================== */
+    :root {
+      /* Colors */
+      --bg-main: #FAF7F2;          /* Marfil / Crema cálido */
+      --bg-card: #FFFFFF;          /* Blanco puro para tarjetas */
+      --bg-subtle: #F4EFE6;        /* Crema contraste suave */
+      
+      --text-main: #1A1A1A;        /* Negro / Carbón elegante */
+      --text-muted: #5A5752;       /* Gris cálido para cuerpo */
+      --text-light: #8A857D;       /* Subtextos */
+      
+      --primary: #C83727;          /* Rojo Terracota del logo */
+      --primary-hover: #A62B1D;    /* Rojo Terracota más oscuro */
+      --primary-light: #FDF0EE;    /* Fondo rosado suave para alertas */
+      
+      --accent-green: #008C45;     /* Verde italiano del logo */
+      --accent-green-bg: #E6F4ED;  /* Fondo suave verde */
+      
+      --border-color: #E8E2D5;     /* Bordes suaves */
+      --border-focus: #C83727;
+      
+      /* Typography */
+      --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      
+      /* Shadows & Radii */
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 24px;
+      --radius-full: 9999px;
+      
+      --shadow-sm: 0 2px 8px rgba(26, 26, 26, 0.04);
+      --shadow-md: 0 8px 24px rgba(26, 26, 26, 0.07);
+      --shadow-lg: 0 16px 40px rgba(26, 26, 26, 0.12);
+      
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Reset & Base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+      padding-bottom: 80px; /* Offset for sticky mobile bar */
+    }
+
+    @media (min-width: 768px) {
+      body {
+        padding-bottom: 0;
+      }
+    }
+
+    /* Container Utility */
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ==========================================
+       TYPOGRAPHY
+       ========================================== */
+    h1, h2, h3 {
+      font-family: var(--font-heading);
+      color: var(--text-main);
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.825rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--primary);
+      background-color: var(--primary-light);
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    @media (min-width: 768px) {
+      .section-title {
+        font-size: 2.6rem;
+      }
+    }
+
+    .section-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      text-align: center;
+      max-width: 620px;
+      margin: 0 auto 36px auto;
+    }
+
+    /* ==========================================
+       BUTTONS & INTERACTIVE ELEMENTS
+       ========================================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px 32px;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      border-radius: var(--radius-full);
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: center;
+      box-shadow: 0 4px 14px rgba(200, 55, 39, 0.25);
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: #FFFFFF;
+    }
+
+    .btn-primary:hover, .btn-primary:focus-visible {
+      background-color: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(200, 55, 39, 0.35);
+      outline: none;
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-block {
+      width: 100%;
+    }
+
+    /* ==========================================
+       HEADER & NAVIGATION
+       ========================================== */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background-color: rgba(250, 247, 242, 0.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 0;
+      transition: var(--transition);
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .header-logo img {
+      height: 42px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .header-logo-text {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.5px;
+    }
+
+    .header-cta {
+      padding: 10px 20px;
+      font-size: 0.9rem;
+    }
+
+    /* ==========================================
+       HERO SECTION
+       ========================================== */
+    .hero {
+      padding: 40px 0 60px 0;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #FFFFFF;
+      border: 1px solid var(--border-color);
+      padding: 6px 16px;
+      border-radius: var(--radius-full);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero-badge-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--accent-green);
+      border-radius: 50%;
+    }
+
+    .hero-logo-img {
+      max-width: 220px;
+      width: 100%;
+      height: auto;
+      margin: 0 auto 24px auto;
+      display: block;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.06));
+    }
+
+    .hero-title {
+      font-size: 2.3rem;
+      line-height: 1.18;
+      max-width: 780px;
+      margin: 0 auto 20px auto;
+    }
+
+    @media (min-width: 768px) {
+      .hero-title {
+        font-size: 3.4rem;
+      }
+    }
+
+    .hero-title span {
+      color: var(--primary);
+      font-style: italic;
+    }
+
+    .hero-description {
+      font-size: 1.125rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 32px auto;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hero-subtext {
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
+
+    /* ==========================================
+       SECCIÓN: QUÉ ES AL PAZZO / EXPERIENCIA
+       ========================================== */
+    .experience-section {
+      padding: 60px 0;
+      background-color: var(--bg-card);
+      border-top: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin-top: 32px;
+    }
+
+    @media (min-width: 768px) {
+      .features-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .feature-card {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 28px 24px;
+      transition: var(--transition);
+      text-align: left;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: #D6CEBE;
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      background-color: var(--primary-light);
+      color: var(--primary);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+
+    .feature-title {
+      font-size: 1.25rem;
+      margin-bottom: 10px;
+    }
+
+    .feature-text {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* Occasions Pill List */
+    .occasions-box {
+      margin-top: 40px;
+      background-color: var(--bg-subtle);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      text-align: center;
+      border: 1px dashed var(--border-color);
+    }
+
+    .occasions-title {
+      font-size: 1.15rem;
+      margin-bottom: 16px;
+      color: var(--text-main);
+    }
+
+    .occasions-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .occasion-tag {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 8px 18px;
+      border-radius: var(--radius-full);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-main);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ==========================================
+       SECCIÓN: LE PIZZE (MENÚ OFICIAL)
+       ========================================== */
+    .pizze-section {
+      padding: 60px 0;
+    }
+
+    .pizze-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 640px) {
+      .pizze-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 992px) {
+      .pizze-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .pizza-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pizza-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background-color: var(--primary);
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .pizza-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: #D8D0BF;
+    }
+
+    .pizza-card:hover::before {
+      opacity: 1;
+    }
+
+    .pizza-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .pizza-name {
+      font-size: 1.35rem;
+      color: var(--text-main);
+    }
+
+    .pizza-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background-color: var(--bg-subtle);
+      color: var(--text-muted);
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-color);
+    }
+
+    .pizza-ingredients {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .pizza-ingredients-label {
+      font-weight: 600;
+      color: var(--text-light);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    /* ==========================================
+       SECCIÓN: CÓMO FUNCIONA
+       ========================================== */
+    .how-section {
+      padding: 60px 0;
+      background-color: var(--bg-subtle);
+      border-top: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-top: 36px;
+    }
+
+    @media (min-width: 768px) {
+      .steps-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .step-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 28px 24px;
+      position: relative;
+    }
+
+    .step-number {
+      font-family: var(--font-heading);
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1;
+      margin-bottom: 14px;
+      opacity: 0.9;
+    }
+
+    .step-title {
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+    }
+
+    .step-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================
+       SECCIÓN: FORMULARIO DE INSCRIPCIÓN
+       ========================================== */
+    .form-section {
+      padding: 60px 0;
+      scroll-margin-top: 70px;
+    }
+
+    .form-container {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 32px 20px;
+      box-shadow: var(--shadow-lg);
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    @media (min-width: 768px) {
+      .form-container {
+        padding: 48px;
+      }
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .form-header h2 {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+
+    .form-header p {
+      color: var(--text-muted);
+      font-size: 0.98rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 640px) {
+      .form-grid-2col {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-main);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .form-label-required {
+      color: var(--primary);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 14px 16px;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: var(--text-main);
+      background-color: var(--bg-main);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+      -webkit-appearance: none;
+    }
+
+    .form-input:hover {
+      border-color: #CFC7B8;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background-color: #FFFFFF;
+      box-shadow: 0 0 0 3px rgba(200, 55, 39, 0.12);
+    }
+
+    .form-input.is-invalid {
+      border-color: var(--primary);
+      background-color: var(--primary-light);
+    }
+
+    .form-error-msg {
+      font-size: 0.825rem;
+      color: var(--primary);
+      font-weight: 600;
+      display: none;
+      margin-top: 2px;
+    }
+
+    .form-error-msg.visible {
+      display: block;
+    }
+
+    .form-notice {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      text-align: center;
+      margin-top: 16px;
+      line-height: 1.45;
+    }
+
+    /* Modal / Alert Dialog State */
+    .status-alert {
+      display: none;
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      margin-bottom: 24px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .status-alert-info {
+      background-color: var(--accent-green-bg);
+      border: 1px solid #B8E2CB;
+      color: #085D31;
+    }
+
+    .status-alert.visible {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    /* ==========================================
+       FOOTER
+       ========================================== */
+    .footer {
+      padding: 56px 0 36px 0;
+      background-color: var(--bg-card);
+      border-top: 1px solid var(--border-color);
+      color: var(--text-main);
+      text-align: center;
+    }
+
+    .footer-logo-img {
+      max-width: 160px;
+      height: auto;
+      margin-bottom: 20px;
+      display: inline-block;
+      filter: none;
+    }
+
+    .footer-tagline {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      font-style: italic;
+      margin-bottom: 24px;
+      color: var(--text-muted);
+    }
+
+    .footer-cta-btn {
+      margin-bottom: 32px;
+    }
+
+    .footer-copy {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      border-top: 1px solid var(--border-color);
+      padding-top: 24px;
+      margin-top: 24px;
+    }
+
+    /* ==========================================
+       STICKY BAR (MOBILE ONLY)
+       ========================================== */
+    .sticky-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgba(250, 247, 242, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border-color);
+      padding: 12px 20px;
+      z-index: 99;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
+      display: flex;
+      justify-content: center;
+    }
+
+    .sticky-bar .btn {
+      width: 100%;
+      max-width: 400px;
+      padding: 14px 24px;
+    }
+
+    @media (min-width: 768px) {
+      .sticky-bar {
+        display: none;
+      }
+    }
+
+    /* Accessibility / Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER / NAVEGACIÓN -->
+  <header class="header" id="header">
+    <div class="container">
+      <nav class="header-nav">
+        <a href="#" class="header-logo" aria-label="Al Pazzo Inicio">
+          <img src="WhatsApp Image 2026-09-28 at 10.54.37 (1).jpeg" alt="Logo Al Pazzo">
+          <span class="header-logo-text">Al Pazzo</span>
+        </a>
+        <a href="#formulario" class="btn btn-primary header-cta">Inscribirse</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        Banquetería Boutique en Santiago
+      </div>
+
+      <img src="WhatsApp Image 2026-09-28 at 10.54.37 (1).jpeg" alt="Logo Al Pazzo - Banquetería Boutique de Pizzas Artesanales" class="hero-logo-img">
+
+      <h1 class="hero-title">
+        Pizzas artesanales hechas para <span>compartir y celebrar</span>
+      </h1>
+
+      <p class="hero-description">
+        Llevamos la experiencia gastronómica del horno artesanal a tus cumpleaños, aniversarios y encuentros privados. Una propuesta sabrosa, cercana y sin complicaciones.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="#formulario" class="btn btn-primary">
+          Inscribirse
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+        <span class="hero-subtext">Reserva con anticipación para coordinar la fecha de tu evento</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUÉ ES AL PAZZO / EXPERIENCIA -->
+  <section class="experience-section">
+    <div class="container">
+      <div style="text-align: center;">
+        <span class="section-tag">La Experiencia</span>
+        <h2 class="section-title">Celebrar alrededor del fuego</h2>
+        <p class="section-subtitle">Al Pazzo combina inspiración italiana, preparación artesanal en vivo e ingredientes seleccionados para que disfrutes junto a tus invitados.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c1.1 0 2 .9 2 2v2.26c2.28.46 4 2.48 4 4.89V19c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2v-7.85c0-2.41 1.72-4.43 4-4.89V4c0-1.1.9-2 2-2z"></path><path d="M8.5 14h7"></path></svg>
+          </div>
+          <h3 class="feature-title">Horneado Artesanal</h3>
+          <p class="feature-text">Masa de fermentación cuidada, ingredientes de primera calidad y el toque inconfundible del horneado tradicional.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          </div>
+          <h3 class="feature-title">Pensado para Compartir</h3>
+          <p class="feature-text">Formato dinámico y relajado, donde las pizzas se disfrutan calientes al centro para compartir en grupo.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          </div>
+          <h3 class="feature-title">Servicio Boutique</h3>
+          <p class="feature-text">Atención cercana y coordinada en Santiago, adaptada a la escala y calidez de tu celebración privada.</p>
+        </div>
+      </div>
+
+      <div class="occasions-box">
+        <h3 class="occasions-title">Ideal para cualquier ocasión especial</h3>
+        <div class="occasions-tags">
+          <span class="occasion-tag">Cumpleaños</span>
+          <span class="occasion-tag">Aniversarios</span>
+          <span class="occasion-tag">Celebraciones Familiares</span>
+          <span class="occasion-tag">Encuentros con Amigos</span>
+          <span class="occasion-tag">Eventos de Empresa</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LE PIZZE (MENÚ OFICIAL) -->
+  <section class="pizze-section" id="menu">
+    <div class="container">
+      <div style="text-align: center;">
+        <span class="section-tag">Nuestras Pizzas</span>
+        <h2 class="section-title">Le Pizze</h2>
+        <p class="section-subtitle">Recetas artesanales preparadas con ingredientes seleccionados. La única fuente oficial de nuestra banquetería.</p>
+      </div>
+
+      <div class="pizze-grid">
+        <!-- 1. Pomodoro -->
+        <article class="pizza-card">
+          <div>
+            <div class="pizza-header">
+              <h3 class="pizza-name">Pomodoro</h3>
+              <span class="pizza-badge">Clásica</span>
+            </div>
+            <div>
+              <span class="pizza-ingredients-label">Ingredientes:</span>
+              <p class="pizza-ingredients">Salsa de tomate, queso mozzarella y albahaca fresca.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 2. Jamón & Queso -->
+        <article class="pizza-card">
+          <div>
+            <div class="pizza-header">
+              <h3 class="pizza-name">Jamón & Queso</h3>
+              <span class="pizza-badge">Especial</span>
+            </div>
+            <div>
+              <span class="pizza-ingredients-label">Ingredientes:</span>
+              <p class="pizza-ingredients">Salsa de tomate, queso mozzarella, queso granulado y prosciutto.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 3. Pepperoni -->
+        <article class="pizza-card">
+          <div>
+            <div class="pizza-header">
+              <h3 class="pizza-name">Pepperoni</h3>
+              <span class="pizza-badge">Favorita</span>
+            </div>
+            <div>
+              <span class="pizza-ingredients-label">Ingredientes:</span>
+              <p class="pizza-ingredients">Salsa de tomate, queso mozzarella y pepperoni.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 4. Mascarpone -->
+        <article class="pizza-card">
+          <div>
+            <div class="pizza-header">
+              <h3 class="pizza-name">Mascarpone</h3>
+              <span class="pizza-badge">Gourmet</span>
+            </div>
+            <div>
+              <span class="pizza-ingredients-label">Ingredientes:</span>
+              <p class="pizza-ingredients">Salsa de tomate, queso mozzarella, jamón serrano y mascarpone.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 5. Mechada & Palta -->
+        <article class="pizza-card">
+          <div>
+            <div class="pizza-header">
+              <h3 class="pizza-name">Mechada & Palta</h3>
+              <span class="pizza-badge">Firma</span>
+            </div>
+            <div>
+              <span class="pizza-ingredients-label">Ingredientes:</span>
+              <p class="pizza-ingredients">Salsa de tomate, palta, carne mechada y queso mozzarella.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 6. Quattro Formaggi -->
+        <article class="pizza-card">
+          <div>
+            <div class="pizza-header">
+              <h3 class="pizza-name">Quattro Formaggi</h3>
+              <span class="pizza-badge">Selección</span>
+            </div>
+            <div>
+              <span class="pizza-ingredients-label">Ingredientes:</span>
+              <p class="pizza-ingredients">Salsa de tomate, queso mozzarella, queso azul, gouda y parmigiano.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 7. Pesto -->
+        <article class="pizza-card">
+          <div>
+            <div class="pizza-header">
+              <h3 class="pizza-name">Pesto</h3>
+              <span class="pizza-badge">Fresca</span>
+            </div>
+            <div>
+              <span class="pizza-ingredients-label">Ingredientes:</span>
+              <p class="pizza-ingredients">Salsa de tomate, pesto, queso mozzarella y tomates cherry.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 8. La Veggie -->
+        <article class="pizza-card">
+          <div>
+            <div class="pizza-header">
+              <h3 class="pizza-name">La Veggie</h3>
+              <span class="pizza-badge">Vegetariana</span>
+            </div>
+            <div>
+              <span class="pizza-ingredients-label">Ingredientes:</span>
+              <p class="pizza-ingredients">Salsa de tomate, queso mozzarella, champiñones salteados, pimentón y cebolla.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 9. La Trufada -->
+        <article class="pizza-card">
+          <div>
+            <div class="pizza-header">
+              <h3 class="pizza-name">La Trufada</h3>
+              <span class="pizza-badge">Especialidad</span>
+            </div>
+            <div>
+              <span class="pizza-ingredients-label">Ingredientes:</span>
+              <p class="pizza-ingredients">Salsa de tomate, queso mozzarella, un toque de mascarpone, aceite de trufa y champiñones.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 10. Carnívora -->
+        <article class="pizza-card">
+          <div>
+            <div class="pizza-header">
+              <h3 class="pizza-name">Carnívora</h3>
+              <span class="pizza-badge">Intensa</span>
+            </div>
+            <div>
+              <span class="pizza-ingredients-label">Ingredientes:</span>
+              <p class="pizza-ingredients">Salsa de tomate, tocino, pepperoni, carne molida y prosciutto.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO FUNCIONA -->
+  <section class="how-section">
+    <div class="container">
+      <div style="text-align: center;">
+        <span class="section-tag">Paso a Paso</span>
+        <h2 class="section-title">Cómo coordinar tu evento</h2>
+        <p class="section-subtitle">Inscribirte es el primer paso para organizar una celebración inolvidable.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">01</div>
+          <h3 class="step-title">Inscríbete</h3>
+          <p class="step-desc">Completa el formulario con tus datos de contacto y la ubicación estimada de tu evento.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">02</div>
+          <h3 class="step-title">Coordinamos juntos</h3>
+          <p class="step-desc">Te contactaremos para conocer los detalles, fecha y cantidad estimada de invitados.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">03</div>
+          <h3 class="step-title">Disfruta tu evento</h3>
+          <p class="step-desc">Llevamos el sabor y la experiencia boutique de Al Pazzo directamente a tu celebración.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMULARIO DE INSCRIPCIÓN -->
+  <section class="form-section" id="formulario">
+    <div class="container">
+      <div class="form-container">
+        
+        <div class="form-header">
+          <span class="section-tag">Inscripción de Contacto</span>
+          <h2>Inscríbete para tu evento</h2>
+          <p>Déjanos tus datos obligatorios y te contactaremos para coordinar tu celebración.</p>
+        </div>
+
+        <!-- Alerta informativa de validación -->
+        <div class="status-alert status-alert-info" id="statusAlert" role="alert">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          <div id="statusAlertText">
+            Formulario validado correctamente. La interfaz está lista para ser conectada al servicio de destino definitivo.
+          </div>
+        </div>
+
+        <form id="inscriptionForm" novalidate>
+          <div class="form-grid">
+            
+            <!-- Nombre y Apellido -->
+            <div class="form-grid form-grid-2col">
+              <div class="form-group">
+                <label for="firstName" class="form-label">
+                  Nombre <span class="form-label-required">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  id="firstName" 
+                  name="firstName" 
+                  class="form-input" 
+                  autocomplete="given-name" 
+                  placeholder="Ej: Mateo"
+                  required
+                >
+                <span class="form-error-msg" id="firstNameError">Por favor ingresa tu nombre.</span>
+              </div>
+
+              <div class="form-group">
+                <label for="lastName" class="form-label">
+                  Apellido <span class="form-label-required">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  id="lastName" 
+                  name="lastName" 
+                  class="form-input" 
+                  autocomplete="family-name" 
+                  placeholder="Ej: Rossi"
+                  required
+                >
+                <span class="form-error-msg" id="lastNameError">Por favor ingresa tu apellido.</span>
+              </div>
+            </div>
+
+            <!-- Dirección -->
+            <div class="form-group">
+              <label for="address" class="form-label">
+                Dirección de domicilio <span class="form-label-required">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="address" 
+                name="address" 
+                class="form-input" 
+                autocomplete="street-address" 
+                placeholder="Ej: Av. Providencia 1234, Depto 501"
+                required
+              >
+              <span class="form-error-msg" id="addressError">Por favor ingresa tu dirección de domicilio.</span>
+            </div>
+
+            <!-- Comuna y Teléfono -->
+            <div class="form-grid form-grid-2col">
+              <div class="form-group">
+                <label for="commune" class="form-label">
+                  Comuna <span class="form-label-required">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  id="commune" 
+                  name="commune" 
+                  class="form-input" 
+                  autocomplete="address-level2" 
+                  placeholder="Ej: Las Condes, Providencia..."
+                  required
+                >
+                <span class="form-error-msg" id="communeError">Por favor ingresa tu comuna.</span>
+              </div>
+
+              <div class="form-group">
+                <label for="phone" class="form-label">
+                  Teléfono <span class="form-label-required">*</span>
+                </label>
+                <input 
+                  type="tel" 
+                  id="phone" 
+                  name="phone" 
+                  class="form-input" 
+                  autocomplete="tel" 
+                  placeholder="+56 9 1234 5678"
+                  required
+                >
+                <span class="form-error-msg" id="phoneError">Ingresa un teléfono válido (ej: +56 9 1234 5678).</span>
+              </div>
+            </div>
+
+            <!-- Correo electrónico -->
+            <div class="form-group">
+              <label for="email" class="form-label">
+                Correo electrónico <span class="form-label-required">*</span>
+              </label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                class="form-input" 
+                autocomplete="email" 
+                placeholder="ejemplo@correo.cl"
+                required
+              >
+              <span class="form-error-msg" id="emailError">Ingresa un correo electrónico válido.</span>
+            </div>
+
+            <!-- Botón submit -->
+            <div style="margin-top: 10px;">
+              <button type="submit" class="btn btn-primary btn-block" id="submitBtn">
+                Inscribirme
+              </button>
+            </div>
+
+          </div>
+        </form>
+
+        <p class="form-notice">
+          Tus datos serán utilizados únicamente para contactarte respecto a tu inscripción y la coordinación de tu evento.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER / CIERRE -->
+  <footer class="footer">
+    <div class="container">
+      <img src="WhatsApp Image 2026-09-28 at 10.54.37 (1).jpeg" alt="Al Pazzo Logo" class="footer-logo-img">
+      <p class="footer-tagline">Celebrar alrededor de una gran pizza artesanal.</p>
+      <div class="footer-cta-btn">
+        <a href="#formulario" class="btn btn-primary">Inscribirse</a>
+      </div>
+      <p class="footer-copy">
+        &copy; Al Pazzo - Banquetería Boutique de Pizzas Artesanales. Santiago, Chile.
+      </p>
+    </div>
+  </footer>
+
+  <!-- STICKY BAR EN MÓVIL -->
+  <div class="sticky-bar" id="stickyBar">
+    <a href="#formulario" class="btn btn-primary">Inscribirse</a>
+  </div>
+
+  <!-- JAVASCRIPT VALIDACIÓN FRONTEND -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('inscriptionForm');
+      const statusAlert = document.getElementById('statusAlert');
+      const statusAlertText = document.getElementById('statusAlertText');
+
+      // Campos
+      const fields = {
+        firstName: {
+          input: document.getElementById('firstName'),
+          error: document.getElementById('firstNameError'),
+          validate: (val) => val.trim().length > 0,
+          errorMsg: 'Por favor ingresa tu nombre.'
+        },
+        lastName: {
+          input: document.getElementById('lastName'),
+          error: document.getElementById('lastNameError'),
+          validate: (val) => val.trim().length > 0,
+          errorMsg: 'Por favor ingresa tu apellido.'
+        },
+        address: {
+          input: document.getElementById('address'),
+          error: document.getElementById('addressError'),
+          validate: (val) => val.trim().length > 0,
+          errorMsg: 'Por favor ingresa tu dirección de domicilio.'
+        },
+        commune: {
+          input: document.getElementById('commune'),
+          error: document.getElementById('communeError'),
+          validate: (val) => val.trim().length > 0,
+          errorMsg: 'Por favor ingresa tu comuna.'
+        },
+        phone: {
+          input: document.getElementById('phone'),
+          error: document.getElementById('phoneError'),
+          validate: (val) => {
+            // Acepta formato chileno flexible con dígitos, espacios, guiones o +56
+            const clean = val.replace(/[\s\-\+\(\)]/g, '');
+            return clean.length >= 8 && /^\d+$/.test(clean);
+          },
+          errorMsg: 'Ingresa un número de teléfono válido (ej: +56 9 1234 5678).'
+        },
+        email: {
+          input: document.getElementById('email'),
+          error: document.getElementById('emailError'),
+          validate: (val) => {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(val.trim());
+          },
+          errorMsg: 'Ingresa un correo electrónico válido.'
+        }
+      };
+
+      // Validación individual de un campo
+      function validateField(key) {
+        const field = fields[key];
+        const value = field.input.value;
+        const isValid = field.validate(value);
+
+        if (!isValid) {
+          field.input.classList.add('is-invalid');
+          field.error.textContent = field.errorMsg;
+          field.error.classList.add('visible');
+          field.input.setAttribute('aria-invalid', 'true');
+        } else {
+          field.input.classList.remove('is-invalid');
+          field.error.classList.remove('visible');
+          field.input.removeAttribute('aria-invalid');
+        }
+
+        return isValid;
+      }
+
+      // Escuchar blur e input en tiempo real para limpiar/mostrar errores
+      Object.keys(fields).forEach((key) => {
+        const field = fields[key];
+        
+        field.input.addEventListener('blur', () => {
+          if (field.input.value.trim() !== '') {
+            validateField(key);
+          }
+        });
+
+        field.input.addEventListener('input', () => {
+          if (field.input.classList.contains('is-invalid')) {
+            validateField(key);
+          }
+        });
+      });
+
+      // Manejo de Submit
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        let isFormValid = true;
+        let firstInvalidInput = null;
+
+        Object.keys(fields).forEach((key) => {
+          const isValid = validateField(key);
+          if (!isValid) {
+            isFormValid = false;
+            if (!firstInvalidInput) {
+              firstInvalidInput = fields[key].input;
+            }
+          }
+        });
+
+        if (!isFormValid) {
+          if (firstInvalidInput) {
+            firstInvalidInput.focus();
+          }
+          statusAlert.classList.remove('visible');
+          return;
+        }
+
+        // Si el formulario es totalmente válido
+        statusAlertText.innerHTML = '<strong>¡Validación exitosa!</strong> Todos los campos cumplen los requisitos obligatorios. La interfaz está lista para ser conectada al servicio de datos definitivo (sin almacenar ni enviar datos por ahora).';
+        statusAlert.classList.add('visible');
+
+        // Scroll hacia la alerta si es necesario
+        statusAlert.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    });
+  </script>
+</body>
+</html>
